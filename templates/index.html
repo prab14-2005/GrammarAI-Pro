@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammar Error Detection and Correction | NLP Project</title>
+  <meta name="description" content="A professional NLP micro-project for English grammar error detection, correction suggestions, and linguistic analysis using Natural Language Processing.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- App Header & Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4Z"/>
+            <path d="M12 11v7"/>
+            <path d="M8 21h8"/>
+            <path d="M19 8a3 3 0 0 1 3 3 3 3 0 0 1-3 3"/>
+            <path d="M5 8a3 3 0 0 0-3 3 3 3 0 0 0 3 3"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Grammar<span class="brand-title-accent">AI</span></span>
+          <span class="brand-tag">NLP Intelligence Engine</span>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs -->
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-tab active" data-tab="dashboard" role="tab" id="tab-btn-dashboard" aria-selected="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-tab" data-tab="checker" role="tab" id="tab-btn-checker" aria-selected="false">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          Grammar Checker
+        </button>
+        <button class="nav-tab" data-tab="analysis" role="tab" id="tab-btn-analysis" aria-selected="false">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+          NLP Analysis
+        </button>
+        <button class="nav-tab" data-tab="history" role="tab" id="tab-btn-history" aria-selected="false">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          History
+        </button>
+        <button class="nav-tab" data-tab="about" role="tab" id="tab-btn-about" aria-selected="false">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          About Project
+        </button>
+      </nav>
+
+      <!-- Theme Switcher -->
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+          <span class="icon-sun">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          </span>
+          <span class="icon-moon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Banner / Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Main View Container -->
+  <main class="main-content">
+
+    <!-- ============================================================== -->
+    <!-- SECTION 1: DASHBOARD -->
+    <!-- ============================================================== -->
+    <section id="section-dashboard" class="tab-content active" role="tabpanel">
+      <!-- Premium Hero Header -->
+      <div class="dashboard-hero">
+        <div class="hero-ambient-glow"></div>
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="pulse-indicator"></span>
+            <span>AI Natural Language Processing</span>
+          </div>
+          <h1 class="hero-title">Write Better. Communicate Smarter.</h1>
+          <p class="hero-subtitle">AI-powered grammar analysis using Natural Language Processing.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" onclick="switchTab('checker')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            Open Grammar Checker
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon icon-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Total Checks</span>
+            <span class="metric-value" id="dash-total-checks">0</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon icon-rose">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Errors Found</span>
+            <span class="metric-value" id="dash-total-errors">0</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon icon-emerald">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Corrections</span>
+            <span class="metric-value" id="dash-total-corrections">0</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon icon-purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Average Score</span>
+            <span class="metric-value" id="dash-avg-accuracy">100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Middle Columns -->
+      <div class="dashboard-columns">
+        <!-- Error Type Breakdown -->
+        <div class="card error-distribution-card">
+          <div class="card-header">
+            <h3 class="card-title">Error Distribution by Category</h3>
+            <span class="badge badge-subtle">NLP Categorization</span>
+          </div>
+          <div class="card-body">
+            <div class="category-bars">
+              <div class="category-bar-item">
+                <div class="bar-labels">
+                  <span class="cat-name"><span class="cat-dot cat-grammar"></span> Grammar (SVA, Verbs, Inversion)</span>
+                  <span class="cat-count" id="count-grammar">0</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-grammar" id="bar-grammar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="category-bar-item">
+                <div class="bar-labels">
+                  <span class="cat-name"><span class="cat-dot cat-spelling"></span> Spelling & Typos</span>
+                  <span class="cat-count" id="count-spelling">0</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-spelling" id="bar-spelling" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="category-bar-item">
+                <div class="bar-labels">
+                  <span class="cat-name"><span class="cat-dot cat-punctuation"></span> Punctuation & Capitalization</span>
+                  <span class="cat-count" id="count-punctuation">0</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-punctuation" id="bar-punctuation" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="category-bar-item">
+                <div class="bar-labels">
+                  <span class="cat-name"><span class="cat-dot cat-style"></span> Style, Redundancy & Other</span>
+                  <span class="cat-count" id="count-style">0</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-style" id="bar-style" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic Quick Test Cards -->
+        <div class="card quick-samples-card">
+          <div class="card-header">
+            <h3 class="card-title">Academic Benchmark Test Cases</h3>
+            <span class="badge badge-accent">1-Click Test</span>
+          </div>
+          <div class="card-body">
+            <p class="card-description">Click any verified test case to immediately check it in the NLP engine:</p>
+            <div class="sample-chips-list">
+              <button class="sample-chip" onclick="runSample('She go to school every day.')">
+                <span class="chip-tag">Subject-Verb</span>
+                <code>"She go to school every day."</code>
+              </button>
+              <button class="sample-chip" onclick="runSample('He don\'t like apples.')">
+                <span class="chip-tag">Contraction SVA</span>
+                <code>"He don't like apples."</code>
+              </button>
+              <button class="sample-chip" onclick="runSample('I has a book.')">
+                <span class="chip-tag">Auxiliary Agreement</span>
+                <code>"I has a book."</code>
+              </button>
+              <button class="sample-chip" onclick="runSample('They was playing cricket.')">
+                <span class="chip-tag">Plural Past</span>
+                <code>"They was playing cricket."</code>
+              </button>
+              <button class="sample-chip" onclick="runSample('Where you are going?')">
+                <span class="chip-tag">Question Inversion</span>
+                <code>"Where you are going?"</code>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Checks Table -->
+      <div class="card recent-checks-card">
+        <div class="card-header">
+          <h3 class="card-title">Recent Grammar Checks</h3>
+          <button class="btn btn-secondary btn-sm" onclick="switchTab('history')">View Full History</button>
+        </div>
+        <div class="card-body no-padding">
+          <div class="table-responsive">
+            <table class="data-table" id="dashboard-recent-table">
+              <thead>
+                <tr>
+                  <th>Original Sentence</th>
+                  <th>Corrected Sentence</th>
+                  <th>Errors</th>
+                  <th>Accuracy</th>
+                  <th>Time</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-recent-body">
+                <tr>
+                  <td colspan="6" class="text-center empty-state">No checks recorded yet. Run a check to see data!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- SECTION 2: GRAMMAR CHECKER -->
+    <!-- ============================================================== -->
+    <section id="section-checker" class="tab-content" role="tabpanel">
+      <div class="content-header">
+        <div>
+          <h1 class="page-title">Grammar Error Detector & Corrector</h1>
+          <p class="page-subtitle">Enter any English sentence or paragraph to detect errors, inspect POS tags, and get corrections.</p>
+        </div>
+        <!-- Quick Preset Dropdown -->
+        <div class="sample-presets">
+          <label for="sample-select">Quick Examples:</label>
+          <select id="sample-select" onchange="onSelectSample(this.value)">
+            <option value="">-- Choose Sample Test Case --</option>
+            <option value="She go to school every day.">She go to school every day.</option>
+            <option value="He don't like apples.">He don't like apples.</option>
+            <option value="I has a book.">I has a book.</option>
+            <option value="They was playing cricket.">They was playing cricket.</option>
+            <option value="Where you are going?">Where you are going?</option>
+            <option value="She go to college every day.">She go to college every day.</option>
+            <option value="I want a apple and an book.">I want a apple and an book.</option>
+            <option value="He is a good studnet and this is the the best book.">He is a good studnet and this is the the best book.</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Checker Layout -->
+      <div class="checker-container">
+        <!-- Input Panel -->
+        <div class="card checker-input-card">
+          <div class="card-header">
+            <span class="card-title">Input Text</span>
+            <div class="input-counters">
+              <span id="input-word-count">0 words</span>
+              <span class="counter-sep">|</span>
+              <span id="input-char-count">0 characters</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="textarea-border-trail-wrapper" id="textarea-trail-wrapper">
+              <div class="border-trail-track" aria-hidden="true">
+                <div class="border-trail-beam"></div>
+              </div>
+              <textarea 
+                id="input-text" 
+                class="grammar-textarea" 
+                placeholder="Type or paste your English text here (e.g., 'She go to school every day.' or 'Where you are going?')..."
+                rows="6"
+                spellcheck="false"
+              ></textarea>
+            </div>
+            
+            <div class="card-actions">
+              <div class="action-left">
+                <button id="btn-clear-input" class="btn btn-secondary" onclick="clearInput()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                  Clear
+                </button>
+              </div>
+              <div class="action-right">
+                <button id="btn-check-grammar" class="btn btn-primary btn-lg" onclick="handleGrammarCheck()">
+                  <span class="btn-spinner" id="btn-check-spinner"></span>
+                  <svg id="btn-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  <span>Check Grammar</span>
+                </button>
+                <button id="btn-ai-correct" class="btn btn-accent btn-lg" onclick="handleAICorrection()">
+                  <span>AI Correct</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div id="ai-loading-overlay" class="ai-loading-overlay hidden" role="status" aria-live="polite" aria-label="AI correction is loading">
+            <div class="border-trail-card">
+              <div class="border-trail-track" aria-hidden="true">
+                <div class="border-trail-beam-card"></div>
+              </div>
+              <div class="border-trail-skeleton-content" role="status" aria-label="Loading...">
+                <div class="skeleton-pill skeleton-w-4"></div>
+                <div class="skeleton-pill skeleton-w-10"></div>
+                <div class="skeleton-pill skeleton-w-12"></div>
+                <div class="skeleton-pill skeleton-w-12"></div>
+                <div class="skeleton-pill skeleton-w-12"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output & Results Section (Revealed on check) -->
+        <div id="results-wrapper" class="results-wrapper hidden">
+
+          <!-- Results Overview with Circular Grammar Score Component -->
+          <div class="results-overview-grid">
+            <!-- Circular Grammar Score Card -->
+            <div class="card score-card">
+              <div class="score-circular-wrapper">
+                <svg class="score-circle-svg" viewBox="0 0 120 120" width="112" height="112">
+                  <circle class="score-circle-bg" cx="60" cy="60" r="48" />
+                  <circle class="score-circle-fill" id="score-circle-bar" cx="60" cy="60" r="48" stroke-dasharray="301.59" stroke-dashoffset="0" />
+                </svg>
+                <div class="score-center-text">
+                  <span class="score-number" id="stat-accuracy">100%</span>
+                  <span class="score-caption">Grammar Score</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modern Statistics Badges Strip -->
+            <div class="stats-badges-strip">
+              <div class="stat-badge">
+                <div class="stat-icon-wrap icon-cyan">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-badge-title">Total Words</span>
+                  <span class="stat-badge-value" id="stat-words">0</span>
+                </div>
+              </div>
+              <div class="stat-badge">
+                <div class="stat-icon-wrap icon-blue">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-badge-title">Total Sentences</span>
+                  <span class="stat-badge-value" id="stat-sentences">0</span>
+                </div>
+              </div>
+              <div class="stat-badge stat-badge-error">
+                <div class="stat-icon-wrap icon-red">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-badge-title">Errors Found</span>
+                  <span class="stat-badge-value" id="stat-errors">0</span>
+                </div>
+              </div>
+              <div class="stat-badge stat-badge-success">
+                <div class="stat-icon-wrap icon-green">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-badge-title">Corrections</span>
+                  <span class="stat-badge-value" id="stat-corrections">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlighted Text & Error Inspection Panel -->
+          <div class="card highlighted-text-card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <h3 class="card-title">Interactive Error Highlighting</h3>
+                <span class="badge badge-info">Click any underlined error to inspect & fix</span>
+              </div>
+              <!-- Color Legend -->
+              <div class="error-legend">
+                <span class="legend-item"><span class="legend-dot dot-grammar"></span> Grammar</span>
+                <span class="legend-item"><span class="legend-dot dot-spelling"></span> Spelling</span>
+                <span class="legend-item"><span class="legend-dot dot-punctuation"></span> Punctuation</span>
+                <span class="legend-item"><span class="legend-dot dot-style"></span> Style/Other</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="highlighted-display" class="highlighted-display-box" aria-live="polite">
+                <!-- Highlighted tokens inserted here -->
+              </div>
+
+              <!-- Interactive Error Inspector Drawer (Appears when an error is clicked) -->
+              <div id="error-inspector" class="error-inspector hidden">
+                <div class="inspector-header">
+                  <div class="inspector-title">
+                    <span id="inspector-badge" class="badge">Grammar Error</span>
+                    <span class="inspector-word-label">Incorrect Word/Phrase:</span>
+                    <strong id="inspector-error-word" class="inspector-word"></strong>
+                  </div>
+                  <button class="btn-close-inspector" onclick="closeInspector()" title="Close Inspector">&times;</button>
+                </div>
+                <div class="inspector-body">
+                  <div class="inspector-field">
+                    <span class="field-title">Suggested Correction:</span>
+                    <div id="inspector-suggestions" class="suggestions-list">
+                      <!-- Suggestion buttons populated dynamically -->
+                    </div>
+                  </div>
+                  <div class="inspector-field">
+                    <span class="field-title">NLP Rule & Explanation:</span>
+                    <p id="inspector-explanation" class="explanation-text"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Breakdown Table -->
+          <div class="card error-list-card">
+            <div class="card-header">
+              <h3 class="card-title">Detected Errors & Suggestions</h3>
+              <span class="badge badge-subtle" id="error-count-badge">0 Errors</span>
+            </div>
+            <div class="card-body no-padding">
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Incorrect Word / Phrase</th>
+                      <th>Error Type</th>
+                      <th>Suggested Correction</th>
+                      <th>NLP Explanation</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="errors-table-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Corrected Text Section -->
+          <div class="card corrected-card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="success-icon-badge">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div>
+                  <h3 class="card-title">Corrected Sentence / Paragraph</h3>
+                  <p class="card-subtext">Grammatically corrected output produced by the NLP pipeline</p>
+                </div>
+              </div>
+              <div class="card-header-actions">
+                <button class="btn btn-secondary btn-sm" id="btn-copy-corrected" onclick="copyCorrectedText()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <span id="copy-btn-text">Copy Text</span>
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="applyAndRecheck()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+                  Check Again
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="corrected-text-display" class="corrected-text-box">
+                <!-- Corrected text string goes here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action to NLP tab -->
+          <div class="nlp-jump-banner">
+            <div>
+              <strong>Academic NLP Inspection Ready</strong>
+              <p>Explore full tokenization, Penn Treebank POS tags, and WordNet lemmatization for this input.</p>
+            </div>
+            <button class="btn btn-accent" onclick="switchTab('analysis')">
+              View Detailed NLP Analysis &rarr;
+            </button>
+          </div>
+
+        </div>
+        <div id="ai-correction-result" class="card corrected-card hidden" aria-live="polite">
+          <div class="card-header"><div><h3 class="card-title">Generative AI Correction</h3><p id="ai-model-name" class="card-subtext"></p></div></div>
+          <div class="card-body"><p class="card-subtext">Generated by a pretrained model; review it for meaning and style.</p><div id="ai-corrected-text-display" class="corrected-text-box"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- SECTION 3: NLP ANALYSIS -->
+    <!-- ============================================================== -->
+    <section id="section-analysis" class="tab-content" role="tabpanel">
+      <div class="content-header">
+        <div>
+          <h1 class="page-title">Natural Language Processing Analysis</h1>
+          <p class="page-subtitle">Deep linguistic breakdown showing tokenization, POS tagging, lemmatization, and syntactic metrics.</p>
+        </div>
+      </div>
+
+      <!-- NLP Academic Pipeline Visualizer -->
+      <div class="card nlp-pipeline-card">
+        <div class="card-header">
+          <h3 class="card-title">NLP System Pipeline Architecture</h3>
+          <span class="badge badge-accent">Processing Flow</span>
+        </div>
+        <div class="card-body">
+          <div class="pipeline-flow">
+            <div class="pipeline-step">
+              <div class="step-num">1</div>
+              <div class="step-label">Input Text</div>
+              <div class="step-desc">Raw English String</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+              <div class="step-num">2</div>
+              <div class="step-label">Preprocessing</div>
+              <div class="step-desc">Cleaning & Whitespace</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+              <div class="step-num">3</div>
+              <div class="step-label">Tokenization</div>
+              <div class="step-desc">Sentences & Words</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+              <div class="step-num">4</div>
+              <div class="step-label">POS Tagging</div>
+              <div class="step-desc">Penn Treebank Perceptron</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+              <div class="step-num">5</div>
+              <div class="step-label">Lemmatization</div>
+              <div class="step-desc">WordNet Morphological</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+              <div class="step-num">6</div>
+              <div class="step-label">Grammar Rules</div>
+              <div class="step-desc">SVA & Inversion Detection</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+              <div class="step-num">7</div>
+              <div class="step-label">Correction</div>
+              <div class="step-desc">Clean Output & DB Storage</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Syntactic & Lexical Metrics -->
+      <div class="metrics-grid nlp-metrics-row">
+        <div class="metric-card">
+          <div class="metric-icon icon-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Sentence Count</span>
+            <span class="metric-value" id="nlp-sentence-count">0</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon icon-purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Word Count</span>
+            <span class="metric-value" id="nlp-word-count">0</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon icon-emerald">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Unique Words</span>
+            <span class="metric-value" id="nlp-unique-words">0</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon icon-rose">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Lexical Diversity</span>
+            <span class="metric-value" id="nlp-lexical-diversity">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tokens, POS Tags & Lemmatization Table -->
+      <div class="card tokens-card">
+        <div class="card-header">
+          <h3 class="card-title">Tokenized Representation & Morphological Tagging</h3>
+          <span class="badge badge-subtle">NLTK Averaged Perceptron & WordNet</span>
+        </div>
+        <div class="card-body no-padding">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Token</th>
+                  <th>POS Tag</th>
+                  <th>Linguistic Category</th>
+                  <th>Penn Treebank Description</th>
+                  <th>WordNet Lemma</th>
+                </tr>
+              </thead>
+              <tbody id="tokens-table-body">
+                <tr>
+                  <td colspan="6" class="text-center empty-state">No sentence analyzed yet. Run a check in the Grammar Checker!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- POS Visual Legend & Tags Key -->
+      <div class="card pos-legend-card">
+        <div class="card-header">
+          <h3 class="card-title">POS Tag Classification Reference</h3>
+        </div>
+        <div class="card-body">
+          <div class="pos-legend-grid">
+            <div class="legend-item"><span class="badge tag-noun">NN / NNS / NNP</span> Noun (Singular, Plural, Proper)</div>
+            <div class="legend-item"><span class="badge tag-verb">VB / VBD / VBZ / VBP</span> Verb (Base, Past, 3rd Person, Present)</div>
+            <div class="legend-item"><span class="badge tag-pron">PRP / PRP$ / WP</span> Pronoun (Personal, Possessive, Wh-)</div>
+            <div class="legend-item"><span class="badge tag-adj">JJ / JJR / JJS</span> Adjective (Base, Comparative, Superlative)</div>
+            <div class="legend-item"><span class="badge tag-adv">RB / WRB</span> Adverb (General, Wh-adverb)</div>
+            <div class="legend-item"><span class="badge tag-prep">IN / TO</span> Preposition / Subordinating Conjunction</div>
+            <div class="legend-item"><span class="badge tag-det">DT / WDT</span> Determiner / Article</div>
+            <div class="legend-item"><span class="badge tag-conj">CC</span> Coordinating Conjunction</div>
+            <div class="legend-item"><span class="badge tag-punct">Punct</span> Punctuation Mark</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- SECTION 4: HISTORY -->
+    <!-- ============================================================== -->
+    <section id="section-history" class="tab-content" role="tabpanel">
+      <div class="content-header">
+        <div>
+          <h1 class="page-title">Grammar Check History</h1>
+          <p class="page-subtitle">Persistent SQLite storage of all previous text checks, detected errors, and corrections.</p>
+        </div>
+        <div class="header-actions-row">
+          <button class="btn btn-danger btn-sm" onclick="confirmClearHistory()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            Clear All History
+          </button>
+        </div>
+      </div>
+
+      <!-- History Table / Cards -->
+      <div class="card history-card">
+        <div class="card-header">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="history-search-input" placeholder="Search previous checks..." oninput="filterHistory(this.value)">
+          </div>
+          <span class="badge badge-subtle" id="history-total-badge">0 Records</span>
+        </div>
+        <div class="card-body no-padding">
+          <div class="table-responsive">
+            <table class="data-table" id="history-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Original Text</th>
+                  <th>Corrected Text</th>
+                  <th>Errors</th>
+                  <th>Accuracy</th>
+                  <th>Date & Time</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body">
+                <tr>
+                  <td colspan="7" class="text-center empty-state">Loading history...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- SECTION 5: ABOUT PROJECT -->
+    <!-- ============================================================== -->
+    <section id="section-about" class="tab-content" role="tabpanel">
+      <div class="about-hero">
+        <h1 class="about-title">GrammarAI Pro: Hybrid NLP &amp; Generative AI Grammar Engine</h1>
+        <p class="about-subtitle">A state-of-the-art dual-engine language processing system combining classical computational linguistics (NLTK, syntactic rules, LanguageTool) with modern generative sequence-to-sequence Transformers (Hugging Face T5).</p>
+      </div>
+
+      <div class="about-grid">
+        <!-- Objective & Problem Statement -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">1. Project Objective &amp; Problem Statement</h3>
+          </div>
+          <div class="card-body">
+            <p><strong>Objective:</strong> To engineer a dual-architecture Natural Language Processing application combining deterministic rule-based syntactic checking, morphological inspection, and generative deep learning (T5 Transformer) for automated English grammatical error detection and contextual correction.</p>
+            <p><strong>Problem Statement:</strong> Written communication frequently suffers from subject-verb agreement mismatches (e.g., <em>"She go"</em>), inverted interrogative structures (e.g., <em>"Where you are going?"</em>), faulty auxiliary selection (e.g., <em>"They was playing"</em>), and determiner errors. Traditional rule systems provide high interpretability but struggle with fluid contextual rephrasing, whereas pure generative models can introduce semantic drift without transparency. <strong>GrammarAI Pro</strong> synthesizes both paradigms into an interactive, transparent dashboard.</p>
+          </div>
+        </div>
+
+        <!-- NLP & AI Techniques Used -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">2. NLP &amp; Deep Learning Methodologies</h3>
+          </div>
+          <div class="card-body">
+            <ul class="about-feature-list">
+              <li><strong>Text Preprocessing &amp; Boundary Checks:</strong> Unicode normalization, contraction expansion, and whitespace conditioning.</li>
+              <li><strong>Sentence &amp; Lexical Tokenization:</strong> Unsupervised sentence boundary segmentation and token extraction using NLTK's Punkt multilingual tokenizer.</li>
+              <li><strong>Part-of-Speech (POS) Tagging:</strong> Grammatical syntactic categorization (e.g., <code>NNP</code>, <code>VBZ</code>, <code>PRP</code>, <code>WRB</code>) using the Averaged Perceptron tagger.</li>
+              <li><strong>Morphological Lemmatization:</strong> Inflection reduction to root dictionary lemmas using WordNet lexical database with POS mapping.</li>
+              <li><strong>Syntactic Rule Induction:</strong> Deterministic detection for Subject-Verb Agreement (SVA), Subject-Auxiliary Inversion in questions, and Determiner-Noun compatibility.</li>
+              <li><strong>Statistical Language Verification:</strong> LanguageTool rule-graph evaluation for contextual collocations and typographic errors.</li>
+              <li><strong>Generative Seq2Seq Transformer:</strong> Deep neural grammatical error correction via Hugging Face's T5 model (<code>prithivida/grammar_error_correcter_v1</code>) using beam search decoding.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Technologies Used -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">3. Technologies &amp; Architecture Stack</h3>
+          </div>
+          <div class="card-body">
+            <div class="tech-stack-tags">
+              <span class="tech-tag"><strong>Python 3.14</strong> Backend Engine</span>
+              <span class="tech-tag"><strong>Flask 3.1</strong> RESTful API Service</span>
+              <span class="tech-tag"><strong>PyTorch 2.14</strong> Deep Learning Runtime</span>
+              <span class="tech-tag"><strong>Transformers 5.2</strong> Hugging Face Seq2Seq Pipeline</span>
+              <span class="tech-tag"><strong>Google T5 Model</strong> <code>grammar_error_correcter_v1</code></span>
+              <span class="tech-tag"><strong>NLTK 3.10</strong> Natural Language Toolkit</span>
+              <span class="tech-tag"><strong>WordNet</strong> Morphological Lemmatizer</span>
+              <span class="tech-tag"><strong>LanguageTool</strong> Linguistic Rule Verification</span>
+              <span class="tech-tag"><strong>SQLite 3</strong> Persistent History &amp; Telemetry</span>
+              <span class="tech-tag"><strong>HTML5 &amp; CSS3</strong> Responsive Dual-Theme UI</span>
+              <span class="tech-tag"><strong>Vanilla ES6+ JS</strong> Client State &amp; Reactive UI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Workflow -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">4. Dual-Engine System Architecture Workflow</h3>
+          </div>
+          <div class="card-body">
+            <div class="workflow-box">
+              <code>
+                                 User Input Text
+                                        │
+                         Text Preprocessing &amp; Normalization
+                                        │
+                    ┌───────────────────┴───────────────────┐
+                    ▼                                       ▼
+       [Path A: Rule-Based Engine]             [Path B: Generative AI Engine]
+       • NLTK Punkt Tokenizer                  • Hugging Face Transformers
+       • Perceptron POS Tagger                 • T5 Seq2Seq Model (PyTorch)
+       • WordNet Lemmatization                 • Lazy Initialization
+       • Syntactic Rules (SVA, Inversion)      • Beam Search Generation
+       • Statistical LanguageTool Checking     • Non-Destructive Parsing
+                    │                                       │
+                    ▼                                       ▼
+       Interactive Color Highlights            Contextual Model Correction
+       &amp; POS Syntactic Analysis Table          (Preserves Alternative Meaning)
+                    │                                       │
+                    └───────────────────┬───────────────────┘
+                                        ▼
+                         Dashboard Presentation &amp; Telemetry
+                         (Persistent SQLite History Log)
+              </code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Practical Applications -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">5. Practical Applications</h3>
+          </div>
+          <div class="card-body">
+            <ul class="about-feature-list">
+              <li><strong>Academic &amp; Research Writing:</strong> Assisting students, scholars, and researchers in detecting structural grammatical flaws and validating vocabulary usage.</li>
+              <li><strong>ESL / EFL Learning Assistance:</strong> Providing non-native English learners with transparent linguistic rationales (POS tags, lemmas, and rule explanations) alongside corrections.</li>
+              <li><strong>Automated Editorial &amp; Publishing Pipelines:</strong> High-throughput copyediting for articles, documentation, and technical manuscripts.</li>
+              <li><strong>Conversational Query Cleansing:</strong> Pre-cleaning user inputs for chatbots, question-answering systems, and search engines before intent classification.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Limitations & Future Scope -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">6. Comparative Evaluation, Ethics &amp; Future Scope</h3>
+          </div>
+          <div class="card-body">
+            <p><strong>Rule Engine vs. Generative AI Trade-Off:</strong> Rule-based checking offers 100% deterministic transparency and zero hallucination risk, but cannot rewrite awkward idioms. The T5 Transformer handles complex rewrites effortlessly, but requires compute overhead and user oversight to prevent subtle semantic shifts.</p>
+            <p><strong>Data Privacy &amp; Ethical AI:</strong> All rule processing runs entirely on-premise without transmitting unencrypted data to external proprietary LLMs. Generative outputs are explicitly labeled to distinguish automated text from user authorship.</p>
+            <p><strong>Future Enhancements:</strong> Fine-tuning specialized domain checkpoints on standard benchmark corpora (JFLEG, CoNLL-2014, BEA-2019), WebAssembly-based client-side Transformer execution via ONNX Runtime, and multi-language grammar support.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Detail Modal for History Check Item -->
+  <div id="history-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title">Grammar Check Details</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-content">
+        <!-- Injected dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+        <button class="btn btn-primary" id="modal-load-btn">Load in Checker</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Bundle -->
+  <script src="/static/js/script.js"></script>
+</body>
+</html>
